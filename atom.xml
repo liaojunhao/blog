@@ -3,11 +3,11 @@
   <title>冰河末日的博客</title>
   
   
-  <link href="https://nihaojob.github.io/atom.xml" rel="self"/>
+  <link href="https://liaojunhao.github.io/atom.xml" rel="self"/>
   
-  <link href="https://nihaojob.github.io/"/>
+  <link href="https://liaojunhao.github.io/"/>
   <updated>2023-06-29T09:35:25.632Z</updated>
-  <id>https://nihaojob.github.io/</id>
+  <id>https://liaojunhao.github.io/</id>
   
   <author>
     <name>junhliao</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>React最佳实践（一）</title>
-    <link href="https://nihaojob.github.io/2020/08/14/React%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%EF%BC%88%E4%B8%80%EF%BC%89/"/>
-    <id>https://nihaojob.github.io/2020/08/14/React%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%EF%BC%88%E4%B8%80%EF%BC%89/</id>
+    <link href="https://liaojunhao.github.io/2020/08/14/React%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>https://liaojunhao.github.io/2020/08/14/React%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%EF%BC%88%E4%B8%80%EF%BC%89/</id>
     <published>2020-08-14T09:02:16.000Z</published>
     <updated>2023-06-29T09:35:25.632Z</updated>
     
@@ -34,17 +34,17 @@
     
     
     
-    <category term="React" scheme="https://nihaojob.github.io/categories/React/"/>
+    <category term="React" scheme="https://liaojunhao.github.io/categories/React/"/>
     
     
-    <category term="React" scheme="https://nihaojob.github.io/tags/React/"/>
+    <category term="React" scheme="https://liaojunhao.github.io/tags/React/"/>
     
   </entry>
   
   <entry>
     <title>游戏引擎Phaser使用总结</title>
-    <link href="https://nihaojob.github.io/2020/02/27/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8EPhaser%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/"/>
-    <id>https://nihaojob.github.io/2020/02/27/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8EPhaser%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</id>
+    <link href="https://liaojunhao.github.io/2020/02/27/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8EPhaser%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/"/>
+    <id>https://liaojunhao.github.io/2020/02/27/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8EPhaser%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</id>
     <published>2020-02-27T08:31:46.000Z</published>
     <updated>2023-06-29T08:52:19.341Z</updated>
     
@@ -59,21 +59,21 @@
     
     
     
-    <category term="2D图形处理" scheme="https://nihaojob.github.io/categories/2D%E5%9B%BE%E5%BD%A2%E5%A4%84%E7%90%86/"/>
+    <category term="2D图形处理" scheme="https://liaojunhao.github.io/categories/2D%E5%9B%BE%E5%BD%A2%E5%A4%84%E7%90%86/"/>
     
     
-    <category term="JS" scheme="https://nihaojob.github.io/tags/JS/"/>
+    <category term="JS" scheme="https://liaojunhao.github.io/tags/JS/"/>
     
-    <category term="游戏" scheme="https://nihaojob.github.io/tags/%E6%B8%B8%E6%88%8F/"/>
+    <category term="游戏" scheme="https://liaojunhao.github.io/tags/%E6%B8%B8%E6%88%8F/"/>
     
-    <category term="canvas" scheme="https://nihaojob.github.io/tags/canvas/"/>
+    <category term="canvas" scheme="https://liaojunhao.github.io/tags/canvas/"/>
     
   </entry>
   
   <entry>
     <title>React基础知识（一）</title>
-    <link href="https://nihaojob.github.io/2019/05/22/React%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%88%E4%B8%80%EF%BC%89/"/>
-    <id>https://nihaojob.github.io/2019/05/22/React%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%88%E4%B8%80%EF%BC%89/</id>
+    <link href="https://liaojunhao.github.io/2019/05/22/React%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>https://liaojunhao.github.io/2019/05/22/React%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%88%E4%B8%80%EF%BC%89/</id>
     <published>2019-05-22T08:57:42.000Z</published>
     <updated>2023-06-29T08:58:58.098Z</updated>
     
@@ -87,10 +87,10 @@
     
     
     
-    <category term="React" scheme="https://nihaojob.github.io/categories/React/"/>
+    <category term="React" scheme="https://liaojunhao.github.io/categories/React/"/>
     
     
-    <category term="React" scheme="https://nihaojob.github.io/tags/React/"/>
+    <category term="React" scheme="https://liaojunhao.github.io/tags/React/"/>
     
   </entry>
   
