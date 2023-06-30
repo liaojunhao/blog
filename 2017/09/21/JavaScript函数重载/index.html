@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Minima -->
+  <!-- Hexo theme created by @adisaktijrs -->
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+
+  
+  <title>JavaScript函数重载</title>
+  
+  <link rel="canonical" href="https://liaojunhao.github.io/2017/09/21/JavaScript%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/">
+  
+  <meta name="description" content="译者按: jQuery 之父 John Resig 巧妙地利用了闭包，实现了 JavaScript 函数重载。  而所谓函数重载：就是函数名称一样，输入不一样，输出也就不一样。或者说，允许某个函数有各种不同输入，根据不同的输入，调用不同的函数，然后返回不同的结果。 但是 JS 中函数不能像传统编程那">
+  
+  
+  <meta name="author" content="andy">
+  
+  <meta property="og:image" content="https://liaojunhao.github.ioundefined">
+  
+  <meta property="og:site_name" content="冰河末日的博客" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="JavaScript函数重载" />
+  
+  <meta property="og:description" content="译者按: jQuery 之父 John Resig 巧妙地利用了闭包，实现了 JavaScript 函数重载。  而所谓函数重载：就是函数名称一样，输入不一样，输出也就不一样。或者说，允许某个函数有各种不同输入，根据不同的输入，调用不同的函数，然后返回不同的结果。 但是 JS 中函数不能像传统编程那">
+  
+  <meta property="og:url" content="https://liaojunhao.github.io/2017/09/21/JavaScript%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/" />
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="JavaScript函数重载">
+  
+  <meta name="twitter:description" content="译者按: jQuery 之父 John Resig 巧妙地利用了闭包，实现了 JavaScript 函数重载。  而所谓函数重载：就是函数名称一样，输入不一样，输出也就不一样。或者说，允许某个函数有各种不同输入，根据不同的输入，调用不同的函数，然后返回不同的结果。 但是 JS 中函数不能像传统编程那">
+  
+  
+  <meta name="twitter:image" content="https://liaojunhao.github.ioundefined">
+  
+  <meta name="twitter:url" content="https://liaojunhao.github.io/2017/09/21/JavaScript%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Preload fonts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload" href="../fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<link rel="stylesheet" href="/css/normalize.css">
+
+  
+<link rel="stylesheet" href="/css/skeleton.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/prism-dark.css">
+
+  
+<link rel="stylesheet" href="/css/prism-line-numbers.css">
+
+  <!-- User css -->
+  
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+
+  <!-- Custom Theme Color Style
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <style>
+  a:not(.icon) {
+    text-decoration-color: #0FA0CE;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      #0FA0CE 50%
+    );
+  }
+  blockquote {
+    border-left: 8px solid #0FA0CE;
+  }
+  .nanobar .bar {
+    background: #0FA0CE;
+  }
+  .button.button-primary:hover,
+  button.button-primary:hover,
+  input[type="submit"].button-primary:hover,
+  input[type="reset"].button-primary:hover,
+  input[type="button"].button-primary:hover,
+  .button.button-primary:focus,
+  button.button-primary:focus,
+  input[type="submit"].button-primary:focus,
+  input[type="reset"].button-primary:focus,
+  input[type="button"].button-primary:focus {
+    background-color: #0FA0CE;
+    border-color: #0FA0CE;
+  }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border: 1px solid #0FA0CE;
+  }
+</style>
+
+  <!-- Google Analytics (With Privacy Settings On)
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="冰河末日的博客" type="application/atom+xml">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div>
+
+        <div class="row">
+  <div class="two columns" style="max-width: 50px">
+    <h1 class="mt-2 mode">
+      <div onclick=setDarkMode(true) id="darkBtn">🌑</div>
+      <div onclick=setDarkMode(false) id="lightBtn" class=hidden>☀️</div>
+      <script >
+        if (localStorage.getItem('preferredTheme') == 'dark') {
+          setDarkMode(true)
+        }
+        function setDarkMode(isDark) {
+          var darkBtn = document.getElementById('darkBtn')
+          var lightBtn = document.getElementById('lightBtn')
+          if (isDark) {
+            lightBtn.style.display = "block"
+            darkBtn.style.display = "none"
+            localStorage.setItem('preferredTheme', 'dark');
+          } else {
+            lightBtn.style.display = "none"
+            darkBtn.style.display = "block"
+            localStorage.removeItem('preferredTheme');
+          }
+          document.body.classList.toggle("darkmode");
+        }
+      </script>
+    </h1>
+  </div>
+
+  <div class="six columns ml-1">
+    <h1 class="mt-2">
+      冰河末日的博客
+    </h1>
+  </div>
+
+  <div class="twelve columns">
+    <div class="row">
+      <div class="nine columns left">
+        <a href="/">主页</a>
+        
+          
+          <a href="/archives" class="ml">归档</a>
+          
+        
+          
+          <a href="/About" class="ml">关于</a>
+          
+        
+          
+          <a href="/categories" class="ml">分类</a>
+          
+        
+        
+      </div>
+    </div>
+    <hr style="margin-bottom: 2.6rem">
+  </div>
+</div>
+
+        <div class="trans">
+            <h2>JavaScript函数重载</h2>
+
+  <blockquote>
+<p>译者按: jQuery 之父 John Resig 巧妙地利用了闭包，实现了 JavaScript 函数重载。</p>
+</blockquote>
+<p>而所谓<strong>函数重载</strong>：就是函数名称一样，输入不一样，输出也就不一样。或者说，允许某个函数有各种不同输入，根据不同的输入，调用不同的函数，然后返回不同的结果。</p>
+<p>但是 JS 中函数不能像传统编程那样重载。在其他语言比如 Java 中，一个函数可以有两个定义， 只要签名(接收参数的类型和数量)不同就行。如前所述，ECMAScript 函数没有签名，因为参数是由 包含零个或多个值的数组表示的。没有函数签名，自然也就没有重载。<strong>所以 JavaScript 中没有真正意义上的函数重载</strong></p>
+<p>如果在 ECMAScript 中定义了两个同名函数，则后定义的会覆盖先定义的。来看下面的例子:</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">addSomeNumber</span><span class="token punctuation">(</span><span class="token parameter">num</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> num <span class="token operator">+</span> <span class="token number">100</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">function</span> <span class="token function">addSomeNumber</span><span class="token punctuation">(</span><span class="token parameter">num</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> num <span class="token operator">+</span> <span class="token number">200</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token function">addSomeNumber</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 300</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里，函数 addSomeNumber()被定义了两次。第一个版本给参数加 100，第二个版本加 200。最 后一行调用这个函数时，返回了 300，因为第二个定义覆盖了第一个定义。</p>
+<h2 id="1-模拟函数重载"><a href="#1-模拟函数重载" class="headerlink" title="1.模拟函数重载"></a>1.模拟函数重载</h2><p>一般来说 JS 可以通过 if…else 或者 switch 来区分不同的逻辑实现模拟函数重载的效果。</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">overload</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>arguments<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"一个参数"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>arguments<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"两个参数"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token function">overload</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//一个参数</span>
+<span class="token function">overload</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//两个参数</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>凭直觉，函数重载可以通过 if…else 或者 switch 实现，这就不去管它了。但是有一次面试中，被说到不要使用这么多的 if…else，当时觉得很奇怪也不知道是性能问题还是阅读性问题，不让使用这么多，于是就好奇怎么可以不通过 if…else 来实现函数的重载。</p>
+<h2 id="2-模拟函数重载-利用闭包"><a href="#2-模拟函数重载-利用闭包" class="headerlink" title="2.模拟函数重载 - 利用闭包"></a>2.模拟函数重载 - 利用闭包</h2><p>直到看到 jQuery 之父 John Resig 提出了一个非常巧(bian)妙(tai)的方法，利用了闭包。</p>
+<p>这个例子是 John Resig 写他的书 《secrets of the JavaScript ninja》第一版中都有提到过，在书中的第 4 章中也有讲解 Function overloading，文中的 addMethod 函数 就是书中的例子 4.15，感兴趣的朋友可以去看看，但是它很代码量很少、很简单，巧妙地使用了 JavaScript 的特性。</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">addMethod</span><span class="token punctuation">(</span><span class="token parameter">object<span class="token punctuation">,</span> name<span class="token punctuation">,</span> fn</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// 先把原来的object[name] 方法，保存在old中</span>
+  <span class="token keyword">var</span> old <span class="token operator">=</span> object<span class="token punctuation">[</span>name<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token comment">// 重新定义 object[name] 方法</span>
+  object<span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 如果函数需要的参数 和 实际传入的参数 的个数相同，就直接调用fn</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>fn<span class="token punctuation">.</span>length <span class="token operator">==</span> arguments<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token function">fn</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> arguments<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 如果不相同,判断old 是不是函数，</span>
+    <span class="token comment">// 如果是就调用old，也就是刚才保存的 object[name] 方法</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> old <span class="token operator">==</span> <span class="token string">"function"</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token function">old</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> arguments<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">// 不传参数时，返回所有name</span>
+<span class="token keyword">function</span> <span class="token function">find0</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>names<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">// 传一个参数时，返回firstName匹配的name</span>
+<span class="token keyword">function</span> <span class="token function">find1</span><span class="token punctuation">(</span><span class="token parameter">firstName</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>names<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>names<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>firstName<span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>names<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">// 传两个参数时，返回firstName和lastName都匹配的name</span>
+<span class="token keyword">function</span> <span class="token function">find2</span><span class="token punctuation">(</span><span class="token parameter">firstName<span class="token punctuation">,</span> lastName</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>names<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>names<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">===</span> firstName <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> lastName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>names<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">function</span> <span class="token function">Users</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">addMethod</span><span class="token punctuation">(</span><span class="token class-name">Users</span><span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> <span class="token string">"find"</span><span class="token punctuation">,</span> find0<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">addMethod</span><span class="token punctuation">(</span><span class="token class-name">Users</span><span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> <span class="token string">"find"</span><span class="token punctuation">,</span> find1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">addMethod</span><span class="token punctuation">(</span><span class="token class-name">Users</span><span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> <span class="token string">"find"</span><span class="token punctuation">,</span> find2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">var</span> users <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Users</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+users<span class="token punctuation">.</span>names <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"John Resig"</span><span class="token punctuation">,</span> <span class="token string">"John Russell"</span><span class="token punctuation">,</span> <span class="token string">"Dean Tom"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>users<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出[ 'John Resig', 'John Russell', 'Dean Tom' ]</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>users<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">"John"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出[ 'John Resig', 'John Russell' ]</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>users<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">"John"</span><span class="token punctuation">,</span> <span class="token string">"Resig"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出[ 'John Resig' ]</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>users<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">"John"</span><span class="token punctuation">,</span> <span class="token string">"E"</span><span class="token punctuation">,</span> <span class="token string">"Resig"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出undefined</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>从效果上来说，users 对象的 find 方法允许 3 种不同的输入: 0 个参数时，返回所有人名；1 个参数时，根据 firstName 查找人名并返回；2 个参数时，根据完整的名称查找人名并返回。</p>
+<p>难点在于，users.find 事实上只能绑定一个函数，那它为何可以处理 3 种不同的输入呢？它不可能同时绑定 3 个函数 find0,find1 与 find2 啊！这里的关键在于 old 属性。</p>
+<p>由 addMethod 函数的调用顺序可知，users.find 最终绑定的是 find2 函数。然而，在绑定 find2 时，old 为 find1；同理，绑定 find1 时，old 为 find0。3 个函数 find0,find1 与 find2 就这样通过闭包链接起来了。</p>
+<p>根据 addMethod 的逻辑，当 fn.length 与 arguments.length 不匹配时，就会去调用 old，直到匹配为止。</p>
+<p><img src="https://static.taishan.qq.com/jun/chongzhai.png" alt="重载"></p>
+<h2 id="重载的好处"><a href="#重载的好处" class="headerlink" title="重载的好处"></a>重载的好处</h2><p>重载其实是把多个功能相近的函数合并为一个函数，重复利用了函数名。减少了代码的数量，还提高代码阅读性和代码质量，假如 jQuery 中的 css()方法不使用重载，那么就要有 5 个不同的函数，来完成功能，那我们就需要记住 5 个不同的函数名，和各个函数相对应的参数的个数和类型，显然就麻烦多了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>虽然 JavaScript 并没有真正意义上的重载，但是重载的效果在 JavaScript 中却非常常见，比如 数组的 splice( )方法，一个参数可以删除，两个参数可以删除一部分，三个参数可以删除完了，再添加新元素。<br>再比如 parseInt( )方法 ，传入一个参数，就判断是用十六进制解析，还是用十进制解析，如果传入两个参数，就用第二个参数作为数字的基数，来进行解析。<br>文中提到的实现重载效果的方法，本质都是对参数进行判断，不管是判断参数个数，还是判断参数类型，都是根据参数的不同，来决定执行什么操作的。<br>虽然，重载能为我们带来许多的便利，但是也不能滥用，不要把一些根本不相关的函数合为一个函数，那样并没有什么意义。</p>
+</blockquote>
+
+  <p><a class="classtest-link" href="/tags/%E5%87%BD%E6%95%B0/" rel="tag">函数</a> — 2017年9月21日</p>
+  
+
+
+          <div class="row mt-2">
+  
+    <div class="eight columns">
+      <p id="madewith" style="color: #c7c7c7;">知行合一，想只有困难，做才有答案。
+        
+    </div>
+
+    <!-- Sepcial thanks to https://simpleicons.org/ for the icons -->
+    <div class="four columns mb-3 posisi" >
+      
+      <a class="ml-0 footer-link icon" href="https://github.com/liaojunhao" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="GitHub">
+        <svg class="github svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      
+
+      
+
+      
+
+      
+
+      
+
+    </div>
+  
+</div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <script src="/js/nanobar.min.js"></script>
+  <script>
+    var options = {
+      classname: 'nanobar',
+      id: 'myNanobar'
+    };
+    var nanobar = new Nanobar(options);
+    nanobar.go(30);
+    nanobar.go(76);
+    nanobar.go(100);
+  </script>
+
+</body>
+
+</html>
