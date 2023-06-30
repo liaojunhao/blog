@@ -277,7 +277,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <p>难点在于，users.find 事实上只能绑定一个函数，那它为何可以处理 3 种不同的输入呢？它不可能同时绑定 3 个函数 find0,find1 与 find2 啊！这里的关键在于 old 属性。</p>
 <p>由 addMethod 函数的调用顺序可知，users.find 最终绑定的是 find2 函数。然而，在绑定 find2 时，old 为 find1；同理，绑定 find1 时，old 为 find0。3 个函数 find0,find1 与 find2 就这样通过闭包链接起来了。</p>
 <p>根据 addMethod 的逻辑，当 fn.length 与 arguments.length 不匹配时，就会去调用 old，直到匹配为止。</p>
-<p><img src="https://static.taishan.qq.com/jun/chongzhai.png" alt="重载"></p>
+<p><img src="https://thumbnail1.baidupcs.com/thumbnail/8ef283549g9b5c4cc7436383e43b19df?fid=3109850117-250528-730835175362338&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-N4UWH2APn3UwCEDXo1XnPRRIpp8=&expires=8h&chkbd=0&chkv=0&dp-logid=8804689670119790263&dp-callid=0&time=1688119200&size=c2560_u1440&quality=90&vuk=3109850117&ft=image&autopolicy=1" alt="重载"></p>
 <h2 id="重载的好处"><a href="#重载的好处" class="headerlink" title="重载的好处"></a>重载的好处</h2><p>重载其实是把多个功能相近的函数合并为一个函数，重复利用了函数名。减少了代码的数量，还提高代码阅读性和代码质量，假如 jQuery 中的 css()方法不使用重载，那么就要有 5 个不同的函数，来完成功能，那我们就需要记住 5 个不同的函数名，和各个函数相对应的参数的个数和类型，显然就麻烦多了。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
 <p>虽然 JavaScript 并没有真正意义上的重载，但是重载的效果在 JavaScript 中却非常常见，比如 数组的 splice( )方法，一个参数可以删除，两个参数可以删除一部分，三个参数可以删除完了，再添加新元素。<br>再比如 parseInt( )方法 ，传入一个参数，就判断是用十六进制解析，还是用十进制解析，如果传入两个参数，就用第二个参数作为数字的基数，来进行解析。<br>文中提到的实现重载效果的方法，本质都是对参数进行判断，不管是判断参数个数，还是判断参数类型，都是根据参数的不同，来决定执行什么操作的。<br>虽然，重载能为我们带来许多的便利，但是也不能滥用，不要把一些根本不相关的函数合为一个函数，那样并没有什么意义。</p>
