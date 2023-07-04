@@ -1,5 +1,13 @@
   <h2><%- page.title %></h2>
-
+  <span class="time" style="margin-bottom: 30px;display: block;">— <%- full_date(page.date, 'll') %></span>
+  <style>
+    .toc{margin-left: 35px;}
+  </style>
+  <div style="float: left; width: 220px; margin-left: -288px; opacity: .8; position: sticky; top: 0;">
+    <div style="overflow-x: hidden; overflow-y: auto; margin-bottom: 40px; height: calc(100vh - 188px); width: 220px;">
+      <%- toc(page.content, {list_number: false}) %>
+    </div>
+  </div>
   <%- page.content%>
-  <p><%- list_tags(page.tags, {class: 'classtest', show_count: false, style: false}) %> — <%- full_date(page.date, 'll') %></p>
+  <p><%- list_tags(page.tags, {class: 'classtest', show_count: false, style: false}) %></p>
   <%- partial('partial/comments') %>
